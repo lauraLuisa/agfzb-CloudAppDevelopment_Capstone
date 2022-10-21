@@ -148,11 +148,15 @@ def analyze_review_sentiments(text):
 
     natural_language_understanding.set_service_url(url) 
 
-    response = natural_language_understanding.analyze( text=text ,features=Features(sentiment=SentimentOptions(targets=[text]))).get_result() 
+    try:
+        response = natural_language_understanding.analyze( text=text ,features=Features(sentiment=SentimentOptions(targets=[text]))).get_result() 
 
-    label=json.dumps(response, indent=2) 
+        label=json.dumps(response, indent=2) 
 
-    label = response['sentiment']['document']['label'] 
+        label = response['sentiment']['document']['label'] 
+    
+    except:
+        label = 'neutral'
 
     return(label) 
 
