@@ -3,7 +3,7 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404, render, redirect
 # from .models import related models
-from .restapis import get_dealers_from_cf, get_dealer_reviews_from_cf, get_dealer_by_id_from_cf
+from .restapis import get_dealers_from_cf, get_dealer_reviews_from_cf, get_dealer_by_id_from_cf, post_request
 from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages
 from datetime import datetime
@@ -104,13 +104,34 @@ def get_dealer_details(request, id):
         # context["dealer"] = dealer
     
         review_url = "https://eu-gb.functions.appdomain.cloud/api/v1/web/67df44c4-1b50-476c-87b6-0ec0ea60bc7a/dealership-package/get-reviews"
+
         reviews = get_dealer_reviews_from_cf(review_url, id=id)
-        print(reviews)
+
         context["reviews"] = reviews
         
-        # return render(request, 'djangoapp/dealer_details.html', context)
-        return HttpResponse(reviews)
+        # return HttpResponse(reviews)
+        return render(request, 'djangoapp/dealer_details.html', context)
+
 # Create a `add_review` view to submit a review
 # def add_review(request, dealer_id):
 # ...
+def add_review(request, dealer_id):
+    if user.is_authenticated:
+        review = {}
+        review["dealership"]: dealer_id
+        review["name"]: request.POST['name']
+        review["purchase"]: false
+        review["review"]: "Great service!"
+        review["purchase_date"]: "10/21/2022"
+        review["car_make"]: "Toyota"
+        review["car_model"]: "Yaris"
+        review["car_year"]: "10/21/2022"
 
+        json_payload = {}
+        json_payload["review"] = review
+
+        review_post_url = "https://eu-gb.functions.appdomain.cloud/api/v1/web/67df44c4-1b50-476c-87b6-0ec0ea60bc7a/dealership-package/review-post"
+
+        res = post_request(review_post_url, json_payload, dealerId=dealer_id)
+        print(res)
+        return HttpResponse(res)

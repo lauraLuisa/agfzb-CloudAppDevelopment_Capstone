@@ -10,7 +10,18 @@
     <body>
 
     <!--Add a nav bar here -->
-
+    <!-- <form action="{% url 'djangoapp:add_review' %}" method="post">
+        <div class="container">
+          <h1>Add review</h1>
+          <hr>
+          <label for="name"><b>Name</b></label>
+          <input class="form-control" type="text" placeholder="Enter Name: " name="name" required>
+          <div>
+              {% csrf_token %}
+              <button class="btn btn-primary mt-4" type="submit">Send review</button>
+          </div>
+        </div>
+      </form> -->
     <!-- Add reviews as cards -->
 
     </body>
